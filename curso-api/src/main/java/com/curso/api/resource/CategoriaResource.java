@@ -21,7 +21,7 @@ public class CategoriaResource {
     @GetMapping
     public ResponseEntity<?> listar(){
 	    List<Categoria> categorias = categoriaRepository.findAll();
-        return !categorias.isEmpty() ? ResponseEntity.ok(categorias) : ResponseEntity.notFound().build();
+        return !categorias.isEmpty() ? ResponseEntity.ok(categorias) : ResponseEntity.noContent().build();
     }
 
     @PostMapping
