@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-CursoApiApplication<curso-api>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.curso.api.CursoApiApplication",
+            "projectName": "curso-api",
+            "args": ""
+        }
+    ]
+}
