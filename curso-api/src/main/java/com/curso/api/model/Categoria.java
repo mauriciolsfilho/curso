@@ -5,6 +5,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+
 
 @Entity
 @Table(name= "categoria")
@@ -14,10 +18,26 @@ public class Categoria {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotNull
+	@Size(min = 3, max = 20)
+	private String nome;
+
 	public Long getId() {
 		return id;
 	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+ 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -42,20 +62,5 @@ public class Categoria {
 			return false;
 		return true;
 	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	private String nome;
-
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
- 
 
 }
