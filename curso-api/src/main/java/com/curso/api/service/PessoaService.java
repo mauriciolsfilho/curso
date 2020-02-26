@@ -15,7 +15,7 @@ public class PessoaService {
 	private PessoaRepository pessoaRepository;
 
 	public Pessoa update(Long id, Pessoa pessoa) {
-		Pessoa pessoaSalva = pessoaRepository.findById(id).orElse(null);
+		Pessoa pessoaSalva = findPessoaById(id);
 
 		if (pessoaSalva == null)
 			throw new EmptyResultDataAccessException(1);
@@ -23,5 +23,20 @@ public class PessoaService {
 		BeanUtils.copyProperties(pessoa, pessoaSalva, "id");
 
 		return pessoaRepository.save(pessoaSalva);
+	}
+
+	public Pessoa findPessoaById(Long id){
+		Pessoa pessoaSalva = pessoaRepository.findById(id).orElse(null);
+
+		if (pessoaSalva == null)
+			throw new EmptyResultDataAccessException(1);
+
+		return pessoaSalva;
+	}
+
+	public void desativarPessoa(Long id, Boolean ativo){
+		Pessoa pessoaSalva = findPessoaById(id);
+		pessoaSalva.setAtivo(ativo);
+		pessoaRepository.save(pessoaSalva);
 	}
 }

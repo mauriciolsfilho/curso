@@ -33,7 +33,7 @@ public class CursoapiExceptionHandler extends ResponseEntityExceptionHandler{
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 
 		String usermessage = messageSource.getMessage("MSG001", null, LocaleContextHolder.getLocale());
-		String developermessage = ex.getCause().toString();
+		String developermessage = ex.getCause() != null ? ex.getCause().toString() : ex.toString();
 	
 		List<Error> erros = Arrays.asList(new Error(usermessage, developermessage));
 		return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);

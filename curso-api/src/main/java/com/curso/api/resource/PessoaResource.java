@@ -57,7 +57,8 @@ public class PessoaResource {
 
     @GetMapping("/{id}")
     public ResponseEntity<Pessoa> findById(@PathVariable Long id){
-    	Pessoa pessoa = pessoaRepository.findById(id).orElse(null);
+    	Pessoa pessoa = pessoaService.findPessoaById(id);
+
     	return pessoa != null ? ResponseEntity.ok(pessoa) : ResponseEntity.notFound().build();
 
     }
@@ -73,6 +74,12 @@ public class PessoaResource {
     	Pessoa pessoaSalva = pessoaService.update(id, pessoa);
     	
     	return ResponseEntity.ok(pessoaSalva);
+    }
+
+    @PutMapping("/{id}/ativo")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void desativarPessoa(@PathVariable Long id, @RequestBody Boolean ativo){
+        pessoaService.desativarPessoa(id, ativo);
     }
 
 }
