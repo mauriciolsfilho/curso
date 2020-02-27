@@ -32,13 +32,14 @@ public class CategoriaResource {
 
     @GetMapping
     public ResponseEntity<?> listar(){
-	    List<Categoria> categorias = categoriaRepository.findAll();
+	    List<Categoria> categorias = categoriaService.listarCategoria();
+
         return !categorias.isEmpty() ? ResponseEntity.ok(categorias) : ResponseEntity.noContent().build();
     }
 
     @PostMapping
     public ResponseEntity<Categoria> criar(@RequestBody @Valid Categoria categoria, HttpServletResponse response){
-        Categoria categoriaSalva = categoriaRepository.save(categoria);
+        Categoria categoriaSalva = categoriaService.create(categoria);
 
         publisher.publishEvent(new RecursoCriadoEvent(this, response, categoriaSalva.getId()));
         return ResponseEntity.status(HttpStatus.CREATED).body(categoriaSalva);
@@ -46,9 +47,9 @@ public class CategoriaResource {
 
     @GetMapping("/{id}")
     public ResponseEntity<Categoria> findById(@PathVariable Long id){
-    	Categoria categoria = categoriaRepository.findById(id).orElse(null);
-    	return categoria != null ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();
+    	Categoria categoria = categoriaService.findCategoriaById(id);
 
+    	return categoria != null ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")

@@ -42,17 +42,19 @@ public class PessoaResource {
 
     @GetMapping
     public ResponseEntity<?> listar(){
-	    List<Pessoa> pessoas = pessoaRepository.findAll();
+	    List<Pessoa> pessoas = pessoaService.listarPessoa();
+
         return !pessoas.isEmpty() ? ResponseEntity.ok(pessoas) : ResponseEntity.noContent().build();
     }
 
     @PostMapping
     public ResponseEntity<Pessoa> criar(@RequestBody @Valid Pessoa pessoa, HttpServletResponse response){
 
-    	Pessoa pessoaSalva = pessoaRepository.save(pessoa);
+    	Pessoa pessoaSalva = pessoaService.create(pessoa);
 
     	publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoaSalva.getId()));
-        return ResponseEntity.status(HttpStatus.CREATED).body(pessoaSalva);
+
+    	return ResponseEntity.status(HttpStatus.CREATED).body(pessoaSalva);
     }
 
     @GetMapping("/{id}")

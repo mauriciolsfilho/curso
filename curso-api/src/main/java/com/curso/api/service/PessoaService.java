@@ -8,11 +8,24 @@ import org.springframework.stereotype.Service;
 import com.curso.api.model.Pessoa;
 import com.curso.api.repository.PessoaRepository;
 
+import java.util.List;
+
 @Service
 public class PessoaService {
 
 	@Autowired
 	private PessoaRepository pessoaRepository;
+
+	public List<Pessoa> listarPessoa(){
+		return pessoaRepository.findAll();
+	}
+
+	public Pessoa create(Pessoa pessoa){
+
+		Pessoa pessoaSalva = pessoaRepository.save(pessoa);
+
+		return pessoaSalva;
+	}
 
 	public Pessoa update(Long id, Pessoa pessoa) {
 		Pessoa pessoaSalva = findPessoaById(id);
