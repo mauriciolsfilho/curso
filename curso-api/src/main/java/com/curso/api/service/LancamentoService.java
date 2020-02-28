@@ -1,14 +1,16 @@
 package com.curso.api.service;
 
-import com.sun.org.apache.bcel.internal.generic.ARETURN;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.curso.api.model.Lancamento;
+import com.curso.api.model.Pessoa;
 import com.curso.api.repository.LancamentoRepository;
+import com.curso.api.repository.PessoaRepository;
+import com.curso.api.repository.filter.LancamentoFilter;
+import com.curso.api.service.exception.PessoaInexistenteOuInativaException;
 
 import java.util.List;
 
@@ -18,8 +20,11 @@ public class LancamentoService {
 	@Autowired
 	private LancamentoRepository lancamentoRepository;
 
-	public List<Lancamento> listarLancamento(){
-		return lancamentoRepository.findAll();
+	@Autowired
+	private PessoaRepository pessoaRepository;
+
+	public List<Lancamento> listarLancamento(LancamentoFilter lancamentoFilter){
+		return lancamentoRepository.filtrar(lancamentoFilter);
 	}
 
 	public Lancamento findLancamentoById(Long id){
@@ -33,6 +38,12 @@ public class LancamentoService {
 
 	public Lancamento create(Lancamento lancamento){
 
+		Pessoa pessoa = pessoaRepository.findById(lancamento.getPessoa().getId()).orElse(null);
+
+		if(pessoa == null || pessoa.isInativo()) {
+			throw new PessoaInexistenteOuInativaException();
+		}
+		
 		Lancamento lancamentoSalvo = lancamentoRepository.save(lancamento);
 
 		return lancamentoSalvo;
