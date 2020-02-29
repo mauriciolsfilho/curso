@@ -1,8 +1,12 @@
 package com.curso.api.service;
 
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.curso.api.model.Lancamento;
@@ -11,8 +15,6 @@ import com.curso.api.repository.LancamentoRepository;
 import com.curso.api.repository.PessoaRepository;
 import com.curso.api.repository.filter.LancamentoFilter;
 import com.curso.api.service.exception.PessoaInexistenteOuInativaException;
-
-import java.util.List;
 
 @Service
 public class LancamentoService {
@@ -23,8 +25,8 @@ public class LancamentoService {
 	@Autowired
 	private PessoaRepository pessoaRepository;
 
-	public List<Lancamento> listarLancamento(LancamentoFilter lancamentoFilter){
-		return lancamentoRepository.filtrar(lancamentoFilter);
+	public Page<Lancamento> listarLancamento(LancamentoFilter lancamentoFilter, Pageable pageable){
+		return lancamentoRepository.filtrar(lancamentoFilter, pageable);
 	}
 
 	public Lancamento findLancamentoById(Long id){

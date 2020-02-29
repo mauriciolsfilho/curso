@@ -1,25 +1,37 @@
 package com.curso.api.resource;
 
-import com.curso.api.event.RecursoCriadoEvent;
-import com.curso.api.exceptionhandler.CursoapiExceptionHandler.Error;
-import com.curso.api.model.Lancamento;
-import com.curso.api.repository.filter.LancamentoFilter;
+import java.util.Arrays;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.curso.api.event.RecursoCriadoEvent;
+import com.curso.api.exceptionhandler.CursoapiExceptionHandler.Error;
+import com.curso.api.model.Lancamento;
+import com.curso.api.repository.LancamentoRepository;
+import com.curso.api.repository.filter.LancamentoFilter;
 import com.curso.api.service.LancamentoService;
 import com.curso.api.service.exception.PessoaInexistenteOuInativaException;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
-import java.util.Arrays;
-import java.util.List;
 
 @RestController
 @RequestMapping("/lancamentos")
@@ -29,14 +41,17 @@ public class LancamentoResource {
 	private MessageSource messageSource;
 
 	@Autowired
+	private LancamentoRepository lancamentoRepository;
+
+	@Autowired
 	private LancamentoService lancamentoService;
 
 	@Autowired
     private ApplicationEventPublisher publisher;
 
 	@GetMapping
-	public List<Lancamento> pesquisar(LancamentoFilter lancamentoFilter){
-		return lancamentoService.listarLancamento(lancamentoFilter);
+	public Page<Lancamento> pesquisar(LancamentoFilter lancamentoFilter, Pageable pageable){
+		return lancamentoService.listarLancamento(lancamentoFilter, pageable);
 	}
 
 	@GetMapping("/{id}")
@@ -73,10 +88,10 @@ public class LancamentoResource {
 	
 		return ResponseEntity.badRequest().body(errors);
 	}
-	/*
+	
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void delete(Long id){
+	public void delete(@PathVariable Long id){
 		lancamentoRepository.deleteById(id);
-	}*/
+	}
 }
