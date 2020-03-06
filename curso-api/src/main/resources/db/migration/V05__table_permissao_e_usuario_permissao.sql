@@ -1,9 +1,3 @@
-CREATE TABLE usuario (
-	id BIGINT(20) PRIMARY KEY, 
-	nome VARCHAR(42) NOT NULL, 
-	email VARCHAR(50) NOT NULL, 
-	senha VARCHAR(150) NOT NULL,
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE permissao(
 	id BIGINT(20) PRIMARY KEY,
@@ -17,10 +11,6 @@ CREATE TABLE usuario_permissao (
 	FOREIGN KEY (id_usuario) REFERENCES usuario(id),
 	FOREIGN KEY (id_permissao) REFERENCES permissao(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-INSERT INTO usuario (id, nome, email, senha) values (1, 'Administrador', 'admin@cursoapi.com', 'admin');
-INSERT INTO usuario (id, nome, email, senha) values (2, 'Mauricio Filho', 'mauricio_1souza@outlook.com', 'admin');
-INSERT INTO usuario (id, nome, email, senha) values (3, 'Convidado', 'convidado@cursoapi.com', 'user');
 
 INSERT INTO permissao (id, descricao) values (1, 'ROLE_CADASTRAR_CATEGORIA');
 INSERT INTO permissao (id, descricao) values (2, 'ROLE_PESQUISAR_CATEGORIA');
