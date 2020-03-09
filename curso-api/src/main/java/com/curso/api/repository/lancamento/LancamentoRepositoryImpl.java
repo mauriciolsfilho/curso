@@ -1,6 +1,5 @@
 package com.curso.api.repository.lancamento;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,4 +88,5 @@ public class LancamentoRepositoryImpl implements LancamentoRepositoryQuery{
 		query.setFirstResult(primeiraPagina);
 		query.setMaxResults(totalRegistrosPorPagina);
 	}
+
 }

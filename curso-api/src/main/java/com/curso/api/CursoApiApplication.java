@@ -6,8 +6,12 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+
+import com.curso.api.config.property.CursoApiProperty;
 
 @SpringBootApplication
+@EnableConfigurationProperties(CursoApiProperty.class)
 public class CursoApiApplication {
 
 
