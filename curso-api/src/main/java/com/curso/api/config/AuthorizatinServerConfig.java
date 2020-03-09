@@ -23,7 +23,7 @@ public class AuthorizatinServerConfig extends AuthorizationServerConfigurerAdapt
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory().withClient("angular").secret("{noop}admin")
 		.scopes("read", "write").authorizedGrantTypes("password", "refresh_token")
-		.accessTokenValiditySeconds(1200)
+		.accessTokenValiditySeconds(20)
 		.refreshTokenValiditySeconds(1800);
 	}
 
