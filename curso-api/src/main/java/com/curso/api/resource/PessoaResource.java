@@ -12,6 +12,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,6 +42,7 @@ public class PessoaResource {
     private ApplicationEventPublisher publisher;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_PESQUISAR_PESSOA')")
     public ResponseEntity<?> listar(){
 	    List<Pessoa> pessoas = pessoaService.listarPessoa();
 
@@ -48,6 +50,7 @@ public class PessoaResource {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_CADASTRAR_PESSOA')")
     public ResponseEntity<Pessoa> criar(@RequestBody @Valid Pessoa pessoa, HttpServletResponse response){
 
     	Pessoa pessoaSalva = pessoaService.create(pessoa);
@@ -58,6 +61,7 @@ public class PessoaResource {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_PESQUISAR_PESSOA')")
     public ResponseEntity<Pessoa> findById(@PathVariable Long id){
     	Pessoa pessoa = pessoaService.findPessoaById(id);
 
@@ -67,11 +71,13 @@ public class PessoaResource {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAnyAuthority('ROLE_REMOVER_PESSOA')")
     public void remove(@PathVariable Long id) {
     	pessoaRepository.deleteById(id);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_CADASTRAR_PESSOA')")
     public ResponseEntity<Pessoa> update(@PathVariable Long id,@Valid @RequestBody Pessoa pessoa){
     	Pessoa pessoaSalva = pessoaService.update(id, pessoa);
     	
@@ -80,6 +86,7 @@ public class PessoaResource {
 
     @PutMapping("/{id}/ativo")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAnyAuthority('ROLE_DESATIVAR_PESSOA')")
     public void desativarPessoa(@PathVariable Long id, @RequestBody Boolean ativo){
         pessoaService.desativarPessoa(id, ativo);
     }

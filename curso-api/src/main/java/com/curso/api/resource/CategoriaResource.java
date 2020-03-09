@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +32,7 @@ public class CategoriaResource {
     private ApplicationEventPublisher publisher;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_PESQUISAR_CATEGORIA')")
     public ResponseEntity<?> listar(){
 	    List<Categoria> categorias = categoriaService.listarCategoria();
 
@@ -38,6 +40,7 @@ public class CategoriaResource {
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_CADASTRAR_CATEGORIA')")
     public ResponseEntity<Categoria> criar(@RequestBody @Valid Categoria categoria, HttpServletResponse response){
         Categoria categoriaSalva = categoriaService.create(categoria);
 
@@ -46,6 +49,7 @@ public class CategoriaResource {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_PESQUISAR_CATEGORIA')")
     public ResponseEntity<Categoria> findById(@PathVariable Long id){
     	Categoria categoria = categoriaService.findCategoriaById(id);
 
@@ -53,12 +57,14 @@ public class CategoriaResource {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_REMOVER_CATEGORIA')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remove(@PathVariable Long id) {
     	categoriaRepository.deleteById(id);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_CADASTRAR_CATEGORIA')")
     public ResponseEntity<Categoria> update(@PathVariable Long id,@Valid @RequestBody Categoria categoria){
     	Categoria categoriaSalva = categoriaService.update(id, categoria);
 

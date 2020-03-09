@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,11 +51,13 @@ public class LancamentoResource {
     private ApplicationEventPublisher publisher;
 
 	@GetMapping
+	@PreAuthorize("hasAnyAuthority('ROLE_PESQUISAR_LANCAMENTO')")
 	public Page<Lancamento> pesquisar(LancamentoFilter lancamentoFilter, Pageable pageable){
 		return lancamentoService.listarLancamento(lancamentoFilter, pageable);
 	}
 
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyAuthority('ROLE_PESQUISAR_LANCAMENTO')")
 	public ResponseEntity<Lancamento> findLancamentoById(@PathVariable  Long id){
 		Lancamento lancamento = lancamentoService.findLancamentoById(id);
 
@@ -62,6 +65,7 @@ public class LancamentoResource {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAnyAuthority('ROLE_CADASTRAR_LANCAMENTO')")
 	public ResponseEntity<Lancamento> criar(@RequestBody @Valid Lancamento lancamento, HttpServletResponse response){
 		Lancamento lancamentoSalvo = lancamentoService.create(lancamento);
 
@@ -71,6 +75,7 @@ public class LancamentoResource {
 	}
 
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAnyAuthority('ROLE_CADASTRAR_LANCAMENTO')")
 	public ResponseEntity<Lancamento> atualizar(@PathVariable Long id, @Valid @RequestBody Lancamento lancamento){
 
 		Lancamento lancamentoSalvo = lancamentoService.update(id, lancamento);
@@ -90,6 +95,7 @@ public class LancamentoResource {
 	}
 	
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAnyAuthority('ROLE_REMOVER_LANCAMENTO')")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long id){
 		lancamentoRepository.deleteById(id);
